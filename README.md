@@ -10,6 +10,10 @@ Assurez-vous d'avoir installé les logiciels suivants sur votre PC :
 *   **Node.js** (v18 ou supérieur) : [Télécharger ici](https://nodejs.org/)
 *   **Python** (v3.8 ou supérieur) : [Télécharger ici](https://www.python.org/downloads/)
 
+*  git lfs install
+*  git clone https://github.com/zineb1212/Medical-App.git
+
+
 ---
 
 ## 🚀 Étape 1 : Lancer la Base de Données (Docker)
