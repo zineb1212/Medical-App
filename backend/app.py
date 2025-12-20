@@ -1,0 +1,44 @@
+from flask import Flask
+from flask_cors import CORS
+from config import Config
+from extensions import db, migrate, jwt
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    
+    # Initialize plugins
+    db.init_app(app)
+    migrate.init_app(app, db)
+    jwt.init_app(app)
+    CORS(app) # Enable CORS for all routes
+    
+    # Register Blueprints
+    from routes.chat_routes import chat_bp
+    from routes.auth_routes import auth_bp
+    from routes.medical_routes import medical_bp
+    from routes.ai_routes import ai_bp
+    app.register_blueprint(chat_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(medical_bp)
+    app.register_blueprint(ai_bp)
+    
+    from routes.access_routes import access_bp
+    app.register_blueprint(access_bp)
+
+    from routes.dashboard_routes import dashboard_bp
+    app.register_blueprint(dashboard_bp)
+    
+    return app
+
+app = create_app()
+
+if __name__ == '__main__':
+    from models.ai_history_model import AIHistory
+
+    with app.app_context():
+        # ... existing tables ...
+        db.create_all()
+        print("Database initialized successfully!")
+        
+    app.run(debug=True, port=5000)
