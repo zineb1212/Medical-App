@@ -37,8 +37,19 @@ if __name__ == '__main__':
     from models.ai_history_model import AIHistory
 
     with app.app_context():
-        # ... existing tables ...
-        db.create_all()
-        print("Database initialized successfully!")
+        try:
+            # ... existing tables ...
+            db.create_all()
+            print("Database initialized successfully!")
+        except Exception as e:
+            print("\n" + "="*50)
+            print("CRITICAL ERROR: DATABASE CONNECTION FAILED")
+            print("="*50)
+            print(f"Details: {e}")
+            print("="*50)
+            print("Please ensure your PostgreSQL server is running.")
+            print("You can verify this by checking standard Windows Services or running 'pg_ctl status'.")
+            print("="*50 + "\n")
+            # Do not exit, allow app to run (but DB features will fail)
         
     app.run(debug=True, port=5000)
