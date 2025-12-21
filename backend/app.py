@@ -34,6 +34,12 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
+    # Import all models here to ensure they are known to SQLAlchemy before create_all
+    from models.user_model import User
+    from models.chat_model import Message, ChatSession
+    from models.medical_model import MedicalFolder, MedicalDocument, MedicalRecord
+    from models.access_model import AccessRequest
+    from models.access_log_model import AccessLog
     from models.ai_history_model import AIHistory
 
     with app.app_context():
