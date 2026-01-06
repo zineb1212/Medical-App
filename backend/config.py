@@ -5,5 +5,6 @@ load_dotenv()
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'super-secret-key-change-this'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///medical_app.db'
+    # Use PostgreSQL by default (matches docker-compose configuration)
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://postgres:password@localhost:5432/medical_app'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

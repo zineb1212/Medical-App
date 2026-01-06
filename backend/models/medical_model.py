@@ -97,6 +97,8 @@ class MedicalDocument(db.Model):
     record_id = db.Column(db.Integer, db.ForeignKey('medical_record.id'), nullable=False)
     name = db.Column(db.String(200), nullable=False)
     file_url = db.Column(db.String(500), nullable=False)
+    ipfs_hash = db.Column(db.String(200), nullable=True) # IPFS hash for blockchain storage
+    tx_hash = db.Column(db.String(200), nullable=True) # Transaction hash from blockchain
     file_type = db.Column(db.String(50)) # pdf, image, etc
     size = db.Column(db.String(50), default="0 KB")
     folder_id = db.Column(db.Integer, db.ForeignKey('medical_folder.id'), nullable=True)
@@ -107,9 +109,12 @@ class MedicalDocument(db.Model):
             'id': self.id,
             'name': self.name,
             'file_url': self.file_url,
+            'ipfs_hash': self.ipfs_hash,
+            'tx_hash': self.tx_hash,
             'file_type': self.file_type,
             'size': self.size,
             'type': self.file_type, # For frontend compatibility
             'date': self.uploaded_at.strftime("%d %b %Y"),
-            'uploaded_at': self.uploaded_at.isoformat()
+            'uploaded_at': self.uploaded_at.isoformat(),
+            'blockchain_verified': bool(self.ipfs_hash and self.tx_hash)
         }

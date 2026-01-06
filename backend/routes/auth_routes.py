@@ -14,6 +14,10 @@ def login():
     role = data.get('role') # Optional, but good to verify
 
     user = User.query.filter_by(id=email).first()
+    
+    users = User.query.all()
+    print([u.to_dict() for u in users])
+
 
     if not user or not user.check_password(password):
         return jsonify({'error': 'Invalid credentials'}), 401

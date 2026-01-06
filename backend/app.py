@@ -18,10 +18,12 @@ def create_app():
     from routes.auth_routes import auth_bp
     from routes.medical_routes import medical_bp
     from routes.ai_routes import ai_bp
+    from routes.blockchain_routes import blockchain_bp
     app.register_blueprint(chat_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(medical_bp)
     app.register_blueprint(ai_bp)
+    app.register_blueprint(blockchain_bp)
     
     from routes.access_routes import access_bp
     app.register_blueprint(access_bp)
@@ -36,7 +38,7 @@ app = create_app()
 if __name__ == '__main__':
     # Import all models here to ensure they are known to SQLAlchemy before create_all
     from models.user_model import User
-    from models.chat_model import Message, ChatSession
+    from models.chat_model import Message
     from models.medical_model import MedicalFolder, MedicalDocument, MedicalRecord
     from models.access_model import AccessRequest
     from models.access_log_model import AccessLog

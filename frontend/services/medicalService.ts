@@ -75,6 +75,20 @@ export const medicalService = {
         return response.json()
     },
 
+    async getFolders(userId: string): Promise<{ folders: MedicalFolder[] }> {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`${API_URL}/medical-record/folders?user_id=${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || "Failed to fetch folders");
+        }
+        return response.json()
+    },
+
     async createFolder(userId: string, name: string, description: string): Promise<MedicalFolder> {
         const token = localStorage.getItem('token')
         const response = await fetch(`${API_URL}/medical-record/folders`, {
