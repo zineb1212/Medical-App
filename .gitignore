@@ -12,6 +12,7 @@ backend/.env
 __pycache__/
 instance/
 .pytest_cache/
+backend/static/uploads/
 
 # Node / Frontend
 frontend/node_modules/

@@ -12,5 +12,3 @@ openai
 python-dotenv
 web3
 requests
-pyipfs
-pinatapy-vourhey

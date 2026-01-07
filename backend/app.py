@@ -19,11 +19,13 @@ def create_app():
     from routes.medical_routes import medical_bp
     from routes.ai_routes import ai_bp
     from routes.blockchain_routes import blockchain_bp
+    from routes.appointment_routes import appointment_bp
     app.register_blueprint(chat_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(medical_bp)
     app.register_blueprint(ai_bp)
     app.register_blueprint(blockchain_bp)
+    app.register_blueprint(appointment_bp)
     
     from routes.access_routes import access_bp
     app.register_blueprint(access_bp)
@@ -43,6 +45,7 @@ if __name__ == '__main__':
     from models.access_model import AccessRequest
     from models.access_log_model import AccessLog
     from models.ai_history_model import AIHistory
+    from models.appointment_model import Appointment
 
     with app.app_context():
         try:
@@ -60,4 +63,4 @@ if __name__ == '__main__':
             print("="*50 + "\n")
             # Do not exit, allow app to run (but DB features will fail)
         
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)

@@ -14,6 +14,10 @@ class IPFSService:
         # Base URLs
         self.pinata_base_url = "https://api.pinata.cloud"
         self.ipfs_gateway = "https://gateway.pinata.cloud/ipfs"
+        
+        if not self.pinata_api_key or not self.pinata_api_secret:
+            print("WARNING: Pinata API keys not found in environment variables (API_Key, API_Secret)")
+
     
     def upload_file(self, file_path, file_name=None):
         """
