@@ -45,7 +45,12 @@ def get_patient_stats():
     # 5. My Doctors List
     requests = AccessRequest.query.filter_by(patient_id=current_user_id, status='approved').all()
     my_doctors_list = []
+    seen_doc_ids = set()
     for req in requests:
+         if req.doctor_id in seen_doc_ids:
+             continue
+         seen_doc_ids.add(req.doctor_id)
+
          doc = User.query.get(req.doctor_id)
          if doc:
              my_doctors_list.append({

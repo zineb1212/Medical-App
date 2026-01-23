@@ -10,7 +10,6 @@ from flask_cors import cross_origin
 
 
 @appointment_bp.route('/api/appointments', methods=['GET'])
-@cross_origin()
 @jwt_required()
 def get_appointments():
     current_user_id = get_jwt_identity()
@@ -40,8 +39,7 @@ def get_appointments():
     appointments = query.order_by(Appointment.date, Appointment.time).all()
     return jsonify([appt.to_dict() for appt in appointments])
 
-@appointment_bp.route('/api/appointments', methods=['POST', 'OPTIONS'])
-@cross_origin()
+@appointment_bp.route('/api/appointments', methods=['POST'])
 @jwt_required()
 def create_appointment():
     current_user_id = get_jwt_identity()
@@ -56,13 +54,18 @@ def create_appointment():
     if creator.role == 'doctor':
         final_doctor_id = current_user_id
         final_patient_id = patient_id
-        # Optional: Verify patient exists
     else:
         final_patient_id = current_user_id
         final_doctor_id = doctor_id
     
     if not final_patient_id or not final_doctor_id:
         return jsonify({'error': 'Doctor and Patient are required'}), 400
+
+    # Verify Existence
+    if not User.query.get(final_patient_id):
+        return jsonify({'error': f'Patient {final_patient_id} not found'}), 404
+    if not User.query.get(final_doctor_id):
+        return jsonify({'error': f'Doctor {final_doctor_id} not found'}), 404
 
     try:
         date_obj = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
@@ -86,8 +89,7 @@ def create_appointment():
     
     return jsonify(appointment.to_dict()), 201
 
-@appointment_bp.route('/api/appointments/<int:appt_id>', methods=['PUT', 'OPTIONS'])
-@cross_origin()
+@appointment_bp.route('/api/appointments/<int:appt_id>', methods=['PUT'])
 @jwt_required()
 def update_appointment(appt_id):
     current_user_id = get_jwt_identity()
@@ -107,8 +109,7 @@ def update_appointment(appt_id):
     db.session.commit()
     return jsonify(appointment.to_dict())
 
-@appointment_bp.route('/api/appointments/<int:appt_id>', methods=['DELETE', 'OPTIONS'])
-@cross_origin()
+@appointment_bp.route('/api/appointments/<int:appt_id>', methods=['DELETE'])
 @jwt_required()
 def delete_appointment(appt_id):
     current_user_id = get_jwt_identity()

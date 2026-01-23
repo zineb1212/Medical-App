@@ -11,7 +11,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    CORS(app) # Enable CORS for all routes
+    CORS(app, resources={r"/*": {"origins": "*"}}) # Enable CORS for all routes
     
     # Register Blueprints
     from routes.chat_routes import chat_bp
